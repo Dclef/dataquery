@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.dclef.clickhouse_springboot.mapper.QqMapper">
+
+    <resultMap type="icu.dclef.clickhouse_springboot.entity.Qq" id="QqMap">
+        <result property="qq" column="qq" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="QqMap">
+        select qq,
+               phone
+        from qq
+          where   qq like concat('%',#{qq},'%',jdbcType=VARCHAR)
+    </select>
+    <select id="queryQq" resultMap="QqMap">
+        select qq,
+               phone
+        from qq
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                and qq like concat('%',#{keywords},'%')
+                or phone like concat('%',#{keywords},'%')
+            </if>
+        </where>
+    </select>
+    <!--查询指定行数据-->
+    <select id="query" resultMap="QqMap">
+        select
+        qq, phone
+        from qq
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                and qq like concat('%',#{keywords},'%')
+                or phone like concat('%',#{keywords},'%')
+            </if>
+        </where>
+        limit #{beginIndex},#{pageSize}
+    </select>
+
+
+
+
+
+
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from qq
+        where qq= #{qq}
+    </delete>
+    <!--  批量删除-->
+
+</mapper>
+
